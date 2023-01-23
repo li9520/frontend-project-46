@@ -13,10 +13,9 @@ const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8'
 
 
 test('genDiff-json', () => {
-  const expectSimpleJSON = readFile('expectSimpleJSON.txt');
-  console.log(expectSimpleJSON);
-  const actual1 = genDiff
-  (getFixturePath('file1.json'), getFixturePath('file2.json'));
-  console.log(actual1);
-  expect(actual1).toStrictEqual(expectSimpleJSON);
+  const expectSimple = readFile('expectSimple.txt');
+  const actual1 = genDiff(getFixturePath('file1.json'), getFixturePath('file2.json'));
+  expect(actual1).toStrictEqual(expectSimple);
+  const actual2 = genDiff(getFixturePath('file1.yml'), getFixturePath('file2.yml'));
+  expect(actual2).toStrictEqual(expectSimple);
 });
