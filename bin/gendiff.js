@@ -3,6 +3,9 @@
 import { program } from 'commander';
 import genDiff from '../src/index.js';
 
+const command = (filepath1, filepath2) => {
+  console.log(genDiff(filepath1, filepath2))
+}
 program
   .version('0.0.1')
 
@@ -10,7 +13,7 @@ program
   .argument('<filepath2>')
   .option('-f, --format <type>', 'output format')
   .description('Compares two configuration files and shows a difference.')
-  .action(genDiff)
+  .action(command)
   .parse(process.argv);
 
   
