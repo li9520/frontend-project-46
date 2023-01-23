@@ -1,6 +1,8 @@
 import _ from 'lodash';
 import fs from 'fs';
 import path from 'path';
+import parse from './parsers.js';
+
 
 const compareObj = (data1, data2) => {
   const sortesKeys = _.sortBy(_.union(Object.keys(data1), Object.keys(data2)));
@@ -25,12 +27,17 @@ const compareObj = (data1, data2) => {
 };
 
 const getAbsolutePath = (filepath) => path.resolve(filepath);
+const readFile = (filepath) => fs.readFileSync(getAbsolutePath(filepath), "utf8");
+
+const getFormat = (filepath) => path.extname(filepath);
+
 
 export default (filepath1, filepath2) => {
-  const file1 = fs.readFileSync(getAbsolutePath(filepath1), "utf8");
-  const file2 = fs.readFileSync(getAbsolutePath(filepath2), "utf8");
-  const extname = path.extname(filepath1);
-  if(extname === '.json') {
-    return(compareObj(JSON.parse(file1), JSON.parse(file2)));
-  }
+
+  const file1 = readFile(filepath1);
+  const file2 = readFile(filepath2);
+
+  const parsedFile1 = parse(file1, getFormat(filepath1));
+  const parsedFile2 = parse(file2, getFormat(filepath2));
+  return compareObj(parsedFile1, parsedFile2);
 };
