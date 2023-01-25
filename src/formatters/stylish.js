@@ -21,7 +21,8 @@ const stringify = (value, replacer = ' ', spacesCount = 1) => {
 const mapMarkers = {
       added: '+ ',
       deleted: '- ',
-      unchanged: '  '
+      unchanged: '  ',
+      nested: '  '
     }
     const lengthMarker = 2;
 

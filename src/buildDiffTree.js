@@ -10,7 +10,7 @@ const buildDiffTree  = (obj1, obj2) => {
       return { name: key, status: 'deleted', value: obj1[key] }
     }
     if ((_.isObject(obj1[key])) && (_.isObject(obj2[key]))) {
-      return { name: key, status: 'unchanged', children: buildDiffTree(obj1[key], obj2[key]) }
+      return { name: key, status: 'nested', children: buildDiffTree(obj1[key], obj2[key]) }
     }
     if (_.isEqual(obj1[key], obj2[key])) {
       return { name: key, status: 'unchanged', value: obj1[key]}
