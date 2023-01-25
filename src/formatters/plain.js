@@ -1,7 +1,6 @@
 import _ from 'lodash';
 
 const plain = (tree, prefix = '') => {
-  console.log(tree);
   const getLineMap = {
     'deleted': (name, ) => `Property '${prefix}${name}' was removed`,
     'added': (name, value) => `Property '${prefix}${name}' was added with value: ${getValue(value)}`,
