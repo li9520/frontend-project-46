@@ -7,8 +7,7 @@ const plain = (tree, prefix = '') => {
     'changed': (name, value) => `Property '${prefix}${name}' was updated. From ${getValue(value.old)} to ${getValue(value.new)}` 
 }
 
-const getValue = ((value) => _.isObject(value) ? '[complex value]' : 
-    (typeof value === 'string') ? `'${value}'` : value);
+const getValue = ((value) => _.isObject(value) ? '[complex value]' : JSON.stringify(value).replaceAll('\"','\''));
 
   const getLine = (node) => {
     if(Object.hasOwn(node, 'children')) {
