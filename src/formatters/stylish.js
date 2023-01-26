@@ -12,47 +12,44 @@ const stringify = (value, replacer = ' ', spacesCount = 1) => {
       .entries(currentValue)
       .map(([key, val]) => `${currentIndent}${key}: ${iter(val, depth + 1)}`);
 
-    return ['{', ...lines, `${bracketIndent}}`, ].join('\n');
+    return ['{', ...lines, `${bracketIndent}}`].join('\n');
   };
 
   return iter(value, 1);
 };
 
 const mapMarkers = {
-      added: '+ ',
-      deleted: '- ',
-      unchanged: '  ',
-      nested: '  '
-    }
-    const lengthMarker = 2;
+  added: '+ ',
+  deleted: '- ',
+  unchanged: '  ',
+  nested: '  ',
+};
+const lengthMarker = 2;
 
 const stylish = (data) => {
   const iter = (currentValue, depth) => {
-    
     const replacer = ' ';
     const spacesCount = 4;
 
     const indentSize = depth * spacesCount - lengthMarker;
     const currentIndent = replacer.repeat(indentSize);
     const bracketIndent = replacer.repeat((depth - 1) * spacesCount);
-    
-    const createLine = (name, value, marker) => 
-      `${currentIndent}${marker}${name}: ${stringify(value,' '.repeat(spacesCount), depth)}`;
+    const createLine = (name, value, marker) => `${currentIndent}${marker}${name}: ${stringify(value, ' '.repeat(spacesCount), depth)}`;
 
     const lines = currentValue
-      .reduce((acc, {name, value, status, children}) => {
-        if(status === 'changed') {
-          const line1 = createLine(name, value.old, mapMarkers['deleted']);
-          const line2 = createLine(name, value.new, mapMarkers['added']);
+      .reduce((acc, {
+        name, value, status, children,
+      }) => {
+        if (status === 'changed') {
+          const line1 = createLine(name, value.old, mapMarkers.deleted);
+          const line2 = createLine(name, value.new, mapMarkers.added);
           return [...acc, line1, line2];
         }
-        else {
-          const data = (children !== undefined) ?  iter(children, depth + 1) : value;
-          const line = createLine(name, data, mapMarkers[status]);
-          return [...acc, line];
-        }
-      },[]);
-    return [ '{', ...lines, `${bracketIndent}}`,].join('\n');
+        const currentData = (children !== undefined) ? iter(children, depth + 1) : value;
+        const line = createLine(name, currentData, mapMarkers[status]);
+        return [...acc, line];
+      }, []);
+    return ['{', ...lines, `${bracketIndent}}`].join('\n');
   };
 
   return iter(data, 1);

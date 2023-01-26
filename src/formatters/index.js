@@ -1,14 +1,14 @@
-import stylish from './stylish.js';
-import plain from './plain.js';
-import json from './json.js';
+import renderStylish from './stylish.js';
+import renderPlain from './plain.js';
+import renderJson from './json.js';
 
 const formatMap = {
-  'stylish': stylish,
-  'plain': plain,
-  'json': json
+  stylish: renderStylish,
+  plain: renderPlain,
+  json: renderJson,
 };
 
 export default (data, nameFormater) => {
-  let format = formatMap[nameFormater];
-  return format(data);
+  const render = formatMap[nameFormater];
+  return render(data);
 };

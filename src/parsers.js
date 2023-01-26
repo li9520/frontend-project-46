@@ -7,6 +7,6 @@ const parsersMap = {
 };
 
 export default (data, format) => {
-  let parse = parsersMap[format];
+  const parse = parsersMap[format];
   return parse(data);
 };

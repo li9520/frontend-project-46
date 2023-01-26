@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import fs from 'fs';
 import path from 'path';
 import parse from './parsers.js';
@@ -6,13 +5,11 @@ import buildDiffTree from './buildDiffTree.js';
 import format from './formatters/index.js';
 
 const getAbsolutePath = (filepath) => path.resolve(filepath);
-const readFile = (filepath) => fs.readFileSync(getAbsolutePath(filepath), "utf8");
+const readFile = (filepath) => fs.readFileSync(getAbsolutePath(filepath), 'utf8');
 
 const getFormat = (filepath) => path.extname(filepath);
 
-
 export default (filepath1, filepath2, nameFormater = 'stylish') => {
-
   const file1 = readFile(filepath1);
   const file2 = readFile(filepath2);
 
@@ -20,5 +17,6 @@ export default (filepath1, filepath2, nameFormater = 'stylish') => {
   const parsedFile2 = parse(file2, getFormat(filepath2));
 
   const diffTree = buildDiffTree(parsedFile1, parsedFile2);
+
   return format(diffTree, nameFormater);
 };
