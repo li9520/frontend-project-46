@@ -9,19 +9,18 @@ const __dirname = dirname(__filename);
 const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
 const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
 
-let file1JSON; let file2JSON; let file1YML; let file2YML;
-beforeAll(() => {
-  file1JSON = getFixturePath('nestedFile1.json');
-  file2JSON = getFixturePath('nestedFile2.json');
-  file1YML = getFixturePath('nestedFile1.yml');
-  file2YML = getFixturePath('nestedFile2.yml');
-});
+const expectNestedStylish = readFile('expectNestedStylish.txt');
+const expectNestedPlain = readFile('expectNestedPlain.txt');
+const expectNestedJson = readFile('expectNestedJson.txt');
 
-test('genDiff', () => {
-  expect(genDiff(file1JSON, file2JSON)).toEqual(readFile('expectNestedStylish.txt'));
-  expect(genDiff(file1YML, file2YML)).toEqual(readFile('expectNestedStylish.txt'));
-  expect(genDiff(file1JSON, file2JSON, 'plain')).toEqual(readFile('expectNestedPlain.txt'));
-  expect(genDiff(file1YML, file2YML, 'plain')).toEqual(readFile('expectNestedPlain.txt'));
-  expect(genDiff(file1JSON, file2JSON, 'json')).toEqual(readFile('expectNestedJson.txt'));
-  expect(genDiff(file1YML, file2YML, 'json')).toEqual(readFile('expectNestedJson.txt'));
+const extensions = ['json', 'yml'];
+
+test.each(extensions)('diff formats of files (.json .yml)', (extension) => {
+  const fileName1 = `${getFixturePath('nestedFile1')}.${extension}`;
+  const fileName2 = `${getFixturePath('nestedFile2')}.${extension}`;
+
+  expect(genDiff(fileName1, fileName2, 'stylish')).toEqual(expectNestedStylish);
+  expect(genDiff(fileName1, fileName2, 'plain')).toEqual(expectNestedPlain);
+  expect(genDiff(fileName1, fileName2, 'json')).toEqual(expectNestedJson);
+  expect(genDiff(fileName1, fileName2)).toEqual(expectNestedStylish);
 });
