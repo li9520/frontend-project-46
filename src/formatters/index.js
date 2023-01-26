@@ -1,9 +1,11 @@
 import stylish from './stylish.js';
 import plain from './plain.js';
+import json from './json.js';
 
 const formatMap = {
   'stylish': stylish,
-  'plain': plain
+  'plain': plain,
+  'json': json
 };
 
 export default (data, nameFormater) => {
